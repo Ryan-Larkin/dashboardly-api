@@ -9,7 +9,6 @@ module.exports = (dataLoader) => {
   // change the form in the front end
 
   authController.post('/users', (req, res) => {
-    // console.log(req.body);
     dataLoader.createUser({
       username: req.body.username,
       email: req.body.email,
@@ -33,8 +32,9 @@ module.exports = (dataLoader) => {
 
   // Delete a session (logout)
   authController.delete('/sessions', onlyLoggedIn, (req, res) => {
-    if (req.sessionToken === req.body.token) {
-      dataLoader.deleteToken(req.body.token)
+    const token = req.headers.authorization.split(' ')[1];
+    if (req.sessionToken === token) {
+      dataLoader.deleteToken(token)
       .then(() => res.status(204).end())
       .catch(err => res.status(400).json(err));
     } else {
@@ -45,9 +45,7 @@ module.exports = (dataLoader) => {
 
   // Retrieve current user
   authController.get('/me', onlyLoggedIn, (req, res) => {
-    // test this
     res.status(200).json(req.user);
-
   });
 
   return authController;

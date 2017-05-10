@@ -11,7 +11,7 @@ module.exports = (dataLoader) => {
       page: req.query.page,
       limit: req.query.count
     })
-    .then(data => res.json(data))
+    .then(data => res.json({boards: data}))
     .catch(err => res.status(400).json(err));
   });
 
@@ -31,8 +31,10 @@ module.exports = (dataLoader) => {
       title: req.body.title,
       description: req.body.description
     })
-    .then(data => res.status(201).json(data))
-    .catch(err => res.status(400).json(err));
+    .then(data => {res.status(201).json(data)})
+    .catch((err) => {
+      res.status(400).json(err);
+    });
   });
 
 
@@ -66,18 +68,15 @@ module.exports = (dataLoader) => {
 
   // Retrieve all the bookmarks for a single board
   boardsController.get('/:id/bookmarks', (req, res) => {
-    // test this
     dataLoader.getAllBookmarksForBoard(req.params.id)
-    .then(data => res.json(data))
+    .then(data => res.json({bookmarks: data}))
     .catch(err => res.status(400).json(err));
   });
 
   // Create a new bookmark under a board
   boardsController.post('/:id/bookmarks', onlyLoggedIn, (req, res) => {
-    // test this
-    console.log(req.params.id);
     dataLoader.createBookmark({
-      boardId: req.params.id,
+      boardId: Number(req.params.id),
       ownerId: req.user.users_id,
       title: req.body.title,
       url: req.body.url
