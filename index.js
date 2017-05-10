@@ -5,6 +5,7 @@ const mysql = require('promise-mysql');
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const checkLoginToken = require('./lib/check-login-token.js');
+const cors = require('cors');
 
 // Data loader
 const DashboardlyDataLoader = require('./lib/dashboardly.js');
@@ -25,6 +26,7 @@ const dataLoader = new DashboardlyDataLoader(connection);
 
 // Express initialization
 const app = express();
+app.use(cors());
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(checkLoginToken(dataLoader));

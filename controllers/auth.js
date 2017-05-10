@@ -6,8 +6,12 @@ module.exports = (dataLoader) => {
   const authController = express.Router();
 
   // Create a new user (signup)
+  // change the form in the front end
+
   authController.post('/users', (req, res) => {
+    // console.log(req.body);
     dataLoader.createUser({
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password
     })
@@ -41,8 +45,9 @@ module.exports = (dataLoader) => {
 
   // Retrieve current user
   authController.get('/me', onlyLoggedIn, (req, res) => {
-    // TODO: this is up to you to implement :)
-    res.status(500).json({ error: 'not implemented' });
+    // test this
+    res.status(200).json(req.user);
+
   });
 
   return authController;

@@ -27,7 +27,7 @@ module.exports = (dataLoader) => {
   // Create a new board
   boardsController.post('/', onlyLoggedIn, (req, res) => {
     dataLoader.createBoard({
-      ownerId: req.user.id,
+      ownerId: req.user.users_id,
       title: req.body.title,
       description: req.body.description
     })
@@ -39,7 +39,8 @@ module.exports = (dataLoader) => {
   // Modify an owned board
   boardsController.patch('/:id', onlyLoggedIn, (req, res) => {
     // First check if the board to be PATCHed belongs to the user making the request
-    dataLoader.boardBelongsToUser(req.params.id, req.user.id)
+
+    dataLoader.boardBelongsToUser(req.params.id, req.user.users_id)
     .then(() => {
       return dataLoader.updateBoard(req.params.id, {
         title: req.body.title,
@@ -54,7 +55,7 @@ module.exports = (dataLoader) => {
   // Delete an owned board
   boardsController.delete('/:id', onlyLoggedIn, (req, res) => {
     // First check if the board to be DELETEd belongs to the user making the request
-    dataLoader.boardBelongsToUser(req.params.id, req.user.id)
+    dataLoader.boardBelongsToUser(req.params.id, req.user.users_id)
     .then(() => {
       return dataLoader.deleteBoard(req.params.id);
     })
@@ -65,14 +66,24 @@ module.exports = (dataLoader) => {
 
   // Retrieve all the bookmarks for a single board
   boardsController.get('/:id/bookmarks', (req, res) => {
-    // TODO: this is up to you to implement :)
-    res.status(500).json({ error: 'not implemented' });
+    // test this
+    dataLoader.getAllBookmarksForBoard(req.params.id)
+    .then(data => res.json(data))
+    .catch(err => res.status(400).json(err));
   });
 
   // Create a new bookmark under a board
   boardsController.post('/:id/bookmarks', onlyLoggedIn, (req, res) => {
-    // TODO: this is up to you to implement :)
-    res.status(500).json({ error: 'not implemented' });
+    // test this
+    console.log(req.params.id);
+    dataLoader.createBookmark({
+      boardId: req.params.id,
+      ownerId: req.user.users_id,
+      title: req.body.title,
+      url: req.body.url
+    })
+    .then(data => res.status(201).json(data))
+    .catch(err => res.status(400).json(err));
   });
 
   return boardsController;
