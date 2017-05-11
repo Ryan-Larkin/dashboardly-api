@@ -9,6 +9,7 @@ module.exports = (dataLoader) => {
   // change the form in the front end
 
   authController.post('/users', (req, res) => {
+    // console.log(req.body);
     dataLoader.createUser({
       username: req.body.username,
       email: req.body.email,
@@ -29,23 +30,22 @@ module.exports = (dataLoader) => {
     .catch(err => res.status(401).json(err));
   });
 
+   // Retrieve current user
+  authController.get('/me', onlyLoggedIn, (req, res) => {
+    console.log(req.user);
+    res.json(req.user);
+  });
+
 
   // Delete a session (logout)
   authController.delete('/sessions', onlyLoggedIn, (req, res) => {
-    const token = req.headers.authorization.split(' ')[1];
-    if (req.sessionToken === token) {
-      dataLoader.deleteToken(token)
+    if (req.sessionToken === req.body.token) {
+      dataLoader.deleteToken(req.body.token)
       .then(() => res.status(204).end())
       .catch(err => res.status(400).json(err));
     } else {
       res.status(401).json({ error: 'Invalid session token' });
     }
-  });
-
-
-  // Retrieve current user
-  authController.get('/me', onlyLoggedIn, (req, res) => {
-    res.status(200).json(req.user);
   });
 
   return authController;
