@@ -10,8 +10,8 @@ module.exports = (dataLoader) => {
     dataLoader.bookmarkBelongsToUser(req.params.id, req.user.users_id)
     .then(() => {
       return dataLoader.updateBookmark(req.params.id, {
-        title: req.body.title,
-        url: req.body.url
+        title: req.body.bookmarkData.title,
+        url: req.body.bookmarkData.url
       });
     })
     .then(data => res.json(data))

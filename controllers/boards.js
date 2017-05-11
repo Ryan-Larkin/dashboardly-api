@@ -41,15 +41,11 @@ module.exports = (dataLoader) => {
   // Modify an owned board
   boardsController.patch('/:id', onlyLoggedIn, (req, res) => {
     // First check if the board to be PATCHed belongs to the user making the request
-    // not receiving the body here
-    console.log('body ', req.body)
-    console.log('params ', req.params);
-    console.log('user ', req.user);
     dataLoader.boardBelongsToUser(req.params.id, req.user.users_id)
     .then(() => {
       return dataLoader.updateBoard(req.params.id, {
-        title: req.body.title,
-        description: req.body.description
+        title: req.body.boardData.title,
+        description: req.body.boardData.description
       });
     })
     .then(data => res.json(data))
