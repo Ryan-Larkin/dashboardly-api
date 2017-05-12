@@ -31,15 +31,15 @@ module.exports = (dataLoader) => {
 
    // Retrieve current user
   authController.get('/me', onlyLoggedIn, (req, res) => {
-    console.log(req.user);
     res.json(req.user);
   });
 
 
   // Delete a session (logout)
   authController.delete('/sessions', onlyLoggedIn, (req, res) => {
-    if (req.sessionToken === req.body.token) {
-      dataLoader.deleteToken(req.body.token)
+    const token = req.headers.authorization.split(' ')[1];
+    if (req.sessionToken === token) {
+      dataLoader.deleteToken(token)
       .then(() => res.status(204).end())
       .catch(err => res.status(400).json(err));
     } else {
