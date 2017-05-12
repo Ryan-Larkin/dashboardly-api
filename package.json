@@ -4,7 +4,7 @@
   "description": "ExpressJS and MySQL-based API for creating shareable boards of bookmarks.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
