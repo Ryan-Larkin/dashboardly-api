@@ -9,7 +9,6 @@ module.exports = (dataLoader) => {
   // change the form in the front end
 
   authController.post('/users', (req, res) => {
-    // console.log(req.body);
     dataLoader.createUser({
       username: req.body.username,
       email: req.body.email,
