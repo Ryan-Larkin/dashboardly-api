@@ -1,8 +1,10 @@
-DROP DATABASE IF EXISTS dashboardly;
+-- DROP DATABASE IF EXISTS dashboardly;
+--
+-- CREATE DATABASE dashboardly;
+--
+-- USE dashboardly;
 
-CREATE DATABASE dashboardly;
-
-USE dashboardly;
+-- USE cncsacd3qw5qe9c7;
 
 CREATE TABLE users (
   id INT AUTO_INCREMENT PRIMARY KEY,
