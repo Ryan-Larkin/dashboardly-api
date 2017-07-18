@@ -1,7 +1,0 @@
-Tuesday: Finish backend coding
-
-Wednesday: Backend coding if not done. Start front end.
-
-Thursday: Finish css
-
-Friday: Last minute stuff
